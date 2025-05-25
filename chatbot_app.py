@@ -1,12 +1,8 @@
-import os
-import streamlit as st
-from dotenv import load_dotenv
 from langchain_community.document_loaders import TextLoader, PDFMinerLoader
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores import Chroma
-from langchain.chains.question_answering import load_qa_chain
+from langchain_community.embeddings import OpenAIEmbeddings
+from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAI
+
 
 # Load .env
 load_dotenv()
