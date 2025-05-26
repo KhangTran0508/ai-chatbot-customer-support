@@ -12,7 +12,17 @@ from langchain.llms import OpenAI
 # Load biến môi trường từ .env
 load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
+question = st.text_input("💬 Câu hỏi của bạn:")
+llm = OpenAI(temperature=0, openai_api_key=openai_api_key)
+if question:
+    try:
+        prompt = f"Câu hỏi: {question}"
+        st.code(prompt)
 
+        response = llm.invoke(prompt)
+        st.success(response)
+    except Exception as e:
+        st.error(f"Lỗi khi gọi AI: {e}")
 # Giao diện ứng dụng
 st.set_page_config(page_title="AI Tư vấn Tài liệu Khách hàng", page_icon="📄")
 st.title("📄 Tải tài liệu riêng và hỏi AI")
