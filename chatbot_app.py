@@ -21,6 +21,28 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 # Giao diện
 st.set_page_config(page_title="AI Tư vấn Tài liệu Khách hàng", page_icon="📄")
 st.title("📄 Tải tài liệu riêng và hỏi AI")
+# Nhập tên khách hàng (chỉ hiển thị khi chưa nhập)
+if "customer_name" not in st.session_state:
+    st.session_state.customer_name = ""
+# Khởi tạo chat_history nếu chưa tồn tại
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+if question:
+    st.session_state.chat_history.append(("Khách hàng", question))
+    st.session_state.chat_history.append(("AI", response))
+
+st.sidebar.header("👤 Thông tin khách hàng")
+name_input = st.sidebar.text_input("Nhập tên khách hàng", value=st.session_state.customer_name)
+
+# Gán lại khi có nhập
+if name_input:
+    st.session_state.customer_name = name_input
+
+# Hiển thị lời chào
+if st.session_state.customer_name:
+    st.success(f"Xin chào {st.session_state.customer_name}! Bạn muốn hỏi gì?")
+else:
+    st.info("Vui lòng nhập tên để bắt đầu.")
 
 # B1: Nhập tên khách hàng
 name = st.text_input("👤 Tên khách hàng (tuỳ chọn):")
@@ -29,7 +51,13 @@ name = st.text_input("👤 Tên khách hàng (tuỳ chọn):")
 uploaded_file = st.file_uploader("📎 Tải file tài liệu (PDF hoặc TXT)", type=["txt", "pdf"])
 
 # B3: Nhập câu hỏi
-question = st.text_input("💬 Câu hỏi của bạn:")
+if st.session_state.customer_name:
+    question = st.text_input(f"{st.session_state.customer_name} hỏi AI:")
+else:
+    question = st.text_input("Bạn muốn hỏi gì?")
+personalized_question = f"Khách hàng tên {st.session_state.customer_name} hỏi: {question}"
+response = llm.invoke(personalized_question)
+
 
 if uploaded_file and question:
     # Đọc file tạm thời
@@ -66,9 +94,18 @@ if uploaded_file and question:
     os.remove(temp_path)
 import pandas as pd
 
-# Nút lưu lịch sử
+import pandas as pd
+
+st.markdown("---")
 if st.button("💾 Lưu lịch sử chat"):
-    chat_data = [{"Người gửi": sender, "Nội dung": message} for sender, message in st.session_state.chat_history]
-    df = pd.DataFrame(chat_data)
-    df.to_csv("lich_su_chat.csv", index=False, encoding="utf-8-sig")
-    st.success("✅ Đã lưu vào file lich_su_chat.csv")
+    if st.session_state.chat_history:
+        chat_data = [
+            {"Người gửi": sender, "Nội dung": message}
+            for sender, message in st.session_state.chat_history
+        ]
+        df = pd.DataFrame(chat_data)
+        df.to_csv("lich_su_chat.csv", index=False, encoding="utf-8-sig")
+        st.success("✅ Đã lưu vào file lich_su_chat.csv")
+    else:
+        st.warning("❗ Chưa có cuộc trò chuyện nào để lưu.")
+
