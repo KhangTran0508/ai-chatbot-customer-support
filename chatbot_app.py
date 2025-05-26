@@ -2,6 +2,15 @@ import os
 import streamlit as st
 import pandas as pd
 from dotenv import load_dotenv
+import os
+import streamlit as st
+
+# Kiểm tra xem API key đã được nạp từ biến môi trường chưa
+api_key = os.getenv("OPENAI_API_KEY")
+if api_key:
+    st.info(f"🔐 API Key đã nạp: {api_key[:8]}..." + "[ĐÃ ẨN PHẦN CÒN LẠI]")
+else:
+    st.error("❌ CHƯA nạp được API Key từ biến môi trường hoặc secrets")
 
 from langchain.document_loaders import TextLoader, PDFMinerLoader
 from langchain.text_splitter import CharacterTextSplitter
@@ -105,3 +114,4 @@ if st.button("💾 Lưu lịch sử chat"):
         st.success("✅ Đã lưu vào file lich_su_chat.csv")
     else:
         st.warning("❗ Chưa có cuộc trò chuyện nào để lưu.")
+
