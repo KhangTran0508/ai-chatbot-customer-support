@@ -1,12 +1,15 @@
 
+import os
+from dotenv import load_dotenv
 from langchain.document_loaders import TextLoader, PDFMinerLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain.llms import OpenAI
-from langchain.document_loaders import TextLoader, PDFMinerLoader
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores import Chroma
-from langchain.llms import OpenAI
+
+# Load .env
+load_dotenv()
+openai_api_key = os.getenv("OPENAI_API_KEY")
+
 
 # Load .env
 load_dotenv()
