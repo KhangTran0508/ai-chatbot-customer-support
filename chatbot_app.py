@@ -1,9 +1,9 @@
+
+
 from langchain.document_loaders import TextLoader, PDFMinerLoader
-from langchain.embeddings import OpenAIEmbeddings
+from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain.llms import OpenAI
-
-
 
 # Load .env
 load_dotenv()
