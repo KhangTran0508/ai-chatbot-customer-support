@@ -13,7 +13,8 @@ from langchain.llms import OpenAI
 load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
 question = st.text_input("💬 Câu hỏi của bạn:")
-llm = OpenAI(temperature=0, openai_api_key=openai_api_key)
+llm = OpenAI(temperature=0)
+
 if question:
     try:
         prompt = f"Câu hỏi: {question}"
