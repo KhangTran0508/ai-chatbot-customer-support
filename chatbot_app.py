@@ -1,5 +1,8 @@
 
-
+from langchain.document_loaders import TextLoader, PDFMinerLoader
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.vectorstores import Chroma
+from langchain.llms import OpenAI
 from langchain.document_loaders import TextLoader, PDFMinerLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
